@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
+    android:label="KaptKoin"
     app:startDestination="@id/FirstFragment">
 
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.vision.kaptkoin.FirstFragment"
-        android:label="@string/first_fragment_label"
+        android:label="KaptKoin"
         tools:layout="@layout/fragment_first">
 
         <action
