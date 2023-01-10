@@ -2,7 +2,6 @@ package com.vision.kaptkoin
 
 
 import android.Manifest
-import android.R.attr.data
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -23,8 +22,14 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.StateSet.TAG
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.vision.kaptkoin.databinding.FragmentSecondBinding
 import java.io.File
+import java.nio.*
+import kotlin.ByteArray
+
+import java.nio.CharBuffer
+import java.nio.charset.Charset
 
 
 /**
@@ -56,10 +61,6 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-        }
-
 
         binding.btnTakePhoto.setOnClickListener() {
             filePhoto = getPhotoFile(FILE_NAME)
@@ -84,10 +85,25 @@ class SecondFragment : Fragment() {
                 chooseImageGallery();
             }
         }
+
+        // An alert that is supposed to show the sum of the coins displayed in the entry image.
+        /*Snackbar.make(
+            this.requireView(),
+        "You possess : " + java.lang.String.valueOf(coinCounter(filePhoto.readBytes())) + " euros !",
+        Snackbar.LENGTH_LONG
+        )
+        .setAction("Action", null).show()*/
     }
+
+    // Imported function from native-lib for the image analysis process.
+    // external fun coinCounter(image : ByteArray): Double
+
 
     // companion object
     companion object {
+        init {
+            System.loadLibrary("native-lib")
+        }
         private val IMAGE_CHOOSE = 1000;
         private val PERMISSION_CODE = 1001;
     }
@@ -96,7 +112,6 @@ class SecondFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 
     private fun getPhotoFile(fileName: String): File {
         val directoryStorage = this.activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
